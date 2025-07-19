@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:marketi/core/constant/string.dart';
-import 'package:marketi/features/auth/view/splash_view.dart';
+import 'package:marketi/features/onboarding/view/splash_view.dart';
 
 class AppRouter {
   Route generatRoute(RouteSettings settings) {
