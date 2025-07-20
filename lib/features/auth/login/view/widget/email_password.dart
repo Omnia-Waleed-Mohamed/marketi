@@ -12,11 +12,13 @@ class EmailAndPassword extends StatelessWidget {
       children: [
         CustomTextField( hintText: 'Username or Email', validator: (value){
             
-        }),
+        },
+        prefixIcon: Icon(Icons.email_outlined,size: 18.sp,),),
         SizedBox(
           height: 12.h,
         ),
-        CustomTextField(hintText: 'Password', validator: (value){})
+        CustomTextField(hintText: 'Password', validator: (value){},
+        prefixIcon: Icon(Icons.lock_outline_rounded),)
       ],
     )
     );
