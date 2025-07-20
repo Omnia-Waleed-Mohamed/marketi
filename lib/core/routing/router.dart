@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketi/core/constant/string.dart';
+import 'package:marketi/features/onboarding/view/on_boarding_view.dart';
 import 'package:marketi/features/onboarding/view/splash_view.dart';
+import 'package:marketi/features/onboarding/view_model/cubit/on_boarding_cubit.dart';
 
 class AppRouter {
   Route generatRoute(RouteSettings settings) {
@@ -10,12 +13,20 @@ class AppRouter {
       case Routes.splash:
         return MaterialPageRoute(builder: (_) => SplashView());
 
+      case Routes.onBoarding:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => OnBoardingCubit(),
+            child: OnBoardingView(),
+          ),
+        );
       default:
-       return   MaterialPageRoute(builder: (_)=>Scaffold(
-         body: Center(
-          child: Text('No route ${settings.name}'),
-         ),
-       )) ; 
+        return MaterialPageRoute(
+            builder: (_) => Scaffold(
+                  body: Center(
+                    child: Text('No route ${settings.name}'),
+                  ),
+                ));
     }
   }
 }
