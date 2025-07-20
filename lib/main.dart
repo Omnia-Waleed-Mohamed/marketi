@@ -27,7 +27,7 @@ class Marketi extends StatelessWidget {
         theme: ThemeData(),
 
         onGenerateRoute: appRouter.generatRoute,
-        initialRoute: Routes.splash,
+        initialRoute: Routes.login,
         
       ),
     );

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:marketi/core/constant/color.dart';
 import 'package:marketi/core/utils/onboarding_list.dart';
+import 'package:marketi/features/auth/login/view/login_view.dart';
 import 'package:marketi/features/onboarding/view_model/cubit/on_boarding_cubit.dart';
 
 class OnBoardingView extends StatelessWidget {
@@ -124,7 +125,7 @@ class OnBoardingView extends StatelessWidget {
                                       if(context.read<OnBoardingCubit>().currentIndex <onBoadingList.length -1){
                                         context.read<OnBoardingCubit>().nextPage();
                                       }else{
-                                       // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=>LoginView));
+                                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=>LoginView()));
                                       }
                                     },
                                     child: cubit.currentIndex < onBoadingList.length-1 ? Text('Next',style: TextStyle(fontSize: 18.sp,),) : Text('Get Start',style: TextStyle(fontSize: 18.sp,)),

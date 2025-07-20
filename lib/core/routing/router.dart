@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketi/core/constant/string.dart';
+import 'package:marketi/features/auth/login/view/login_view.dart';
 import 'package:marketi/features/onboarding/view/on_boarding_view.dart';
 import 'package:marketi/features/onboarding/view/splash_view.dart';
 import 'package:marketi/features/onboarding/view_model/cubit/on_boarding_cubit.dart';
@@ -20,6 +21,10 @@ class AppRouter {
             child: OnBoardingView(),
           ),
         );
+
+       case Routes.login:
+        return MaterialPageRoute(builder: (_) => LoginView());
+ 
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
