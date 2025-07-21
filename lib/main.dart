@@ -3,9 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:marketi/core/constant/string.dart';
 import 'package:marketi/core/routing/router.dart';
+//import 'package:device_preview/device_preview.dart';
+
 
 void main() {
-  runApp( Marketi(appRouter: AppRouter(),));
+  runApp(
+    //DevicePreview(
+    //enabled: !kReleaseMode,
+      //builder:(context)=> 
+      Marketi(
+    appRouter: AppRouter(),
+  ));
+  //);
 }
 
 
@@ -28,6 +37,8 @@ class Marketi extends StatelessWidget {
 
         onGenerateRoute: appRouter.generatRoute,
         initialRoute: Routes.signup,
+
+       // builder: DevicePreview.appBuilder,
         
       ),
     );
