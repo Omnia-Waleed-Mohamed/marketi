@@ -28,6 +28,7 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
  void initState(){
 
   super.initState();
+   passwordControllerListner();
 
  }
 
@@ -59,7 +60,7 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
         ),
         CustomTextField(hintText: 'Password', validator: (value){
           if(value == null || value.isEmpty || !AppRegex.isPasswordValid(value)){
-                return 'please enter a valid email ';
+                return 'please enter a valid password ';
               }
         },
         prefixIcon: Icon(Icons.lock_outline_rounded),)

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:marketi/core/constant/color.dart';
+import 'package:marketi/core/helper/app_regex.dart';
 import 'package:marketi/core/widget/custom_arrow_back.dart';
 import 'package:marketi/core/widget/custom_buttom.dart';
 import 'package:marketi/core/widget/custom_text_field.dart';
@@ -15,7 +16,36 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SiState extends State<SignUpView> {
+   bool hasLowerCase =false;
+  bool hasUpperCase =false;
+  bool hasSpecialCharacter =false;
+  bool hasNumber =false;
+  bool hasMinLenght =false;
+  bool isPasswordObscureText =false;
+  late TextEditingController passwordController;
   @override
+
+  void initState(){
+
+  super.initState();
+  passwordControllerListner();
+
+ }
+
+ void passwordControllerListner(){
+
+  passwordController.addListener((){
+    setState(() {
+      hasLowerCase =AppRegex.hasLowerCase(passwordController.text);
+      hasUpperCase =AppRegex.hasUpperCase(passwordController.text);
+      hasSpecialCharacter =AppRegex.hasSpecialCharacter(passwordController.text);
+      hasMinLenght =AppRegex.hasMinLength(passwordController.text); 
+    });
+
+  });
+
+ }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -50,7 +80,11 @@ class _SiState extends State<SignUpView> {
             ),
             CustomTextField(
               hintText: 'Full Name',
-              validator: (value) {},
+              validator: (value) {
+                 if(value == null || value.isEmpty ){
+                return 'please enter a valid name ';
+              }
+              },
               prefixIcon: Padding(
                 padding: EdgeInsets.only(top: 12, left: 14, bottom: 14),
                 child: FaIcon(
@@ -69,7 +103,11 @@ class _SiState extends State<SignUpView> {
             ),
             CustomTextField(
               hintText: '+20 1501142409',
-              validator: (value) {},
+              validator: (value) {
+                 if(value == null || value.isEmpty || !AppRegex.isPhoneNumberValid(value)){
+                return 'please enter a valid phone ';
+              }
+              },
               prefixIcon: Padding(
                 padding: EdgeInsets.only(top: 12, left: 14, bottom: 14),
                 child: FaIcon(
@@ -88,7 +126,11 @@ class _SiState extends State<SignUpView> {
             ),
             CustomTextField(
               hintText: 'You@gmail.com ',
-              validator: (value) {},
+              validator: (value) {
+                 if(value == null || value.isEmpty || !AppRegex.isEmailValid(value)){
+                return 'please enter a valid email ';
+              }
+              },
               prefixIcon: Padding(
                 padding: EdgeInsets.only(top: 12, left: 14, bottom: 14),
                 child: FaIcon(
@@ -107,7 +149,11 @@ class _SiState extends State<SignUpView> {
             ),
             CustomTextField(
               hintText: 'Password',
-              validator: (value) {},
+              validator: (value) {
+                if(value == null || value.isEmpty || !AppRegex.isPasswordValid(value)){
+                return 'please enter a valid password ';
+              }
+              },
               prefixIcon: Icon(
                 Icons.lock_outline_rounded,
                 size: 18,
@@ -123,7 +169,11 @@ class _SiState extends State<SignUpView> {
             ),
             CustomTextField(
               hintText: 'Confirm Password',
-              validator: (value) {},
+              validator: (value) {
+                if(value == null || value.isEmpty ){
+                return 'please enter a valid password ';
+              }
+              },
               prefixIcon: Icon(
                 Icons.lock_outline_rounded,
                 size: 18,
