@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:marketi/core/constant/color.dart';
+import 'package:marketi/core/constant/string.dart';
 import 'package:marketi/core/widget/custom_buttom.dart';
+import 'package:marketi/features/auth/login/data/model/login_model.dart';
 import 'package:marketi/features/auth/login/view/widget/custom_other_login.dart';
 import 'package:marketi/features/auth/login/view/widget/email_password.dart';
+import 'package:marketi/features/auth/login/view_model/login_view_model.dart';
 
 class LoginView extends StatelessWidget {
-  const LoginView({super.key});
+  
+ LoginView({super.key});
 
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +31,9 @@ class LoginView extends StatelessWidget {
               ),
             ),
             
-               EmailAndPassword(),
+            //  EmailAndPassword(),
+           EmailAndPassword(key: EmailAndPassword.globalKey),
+               
                Align(
                 alignment: Alignment.centerRight,
                  child: Padding(
@@ -45,9 +52,31 @@ class LoginView extends StatelessWidget {
                SizedBox(height: 12.h,),
                Padding(
                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                 child: CustomButtom(text: 'Log In', onPressed: (){}),
-               ),
-               SizedBox(height: 14.sp,),
+            child: CustomButtom(
+                text: 'Log In',
+                onPressed: () {
+                  final formState = EmailAndPassword.globalKey.currentState;
+
+                  if (formState != null && formState.validateForm()) {
+                    final email = formState.email;
+                    final password = formState.password;
+
+          
+                    print('Email: $email');
+                    print('Password: $password');
+
+                     final request = LoginRequest(
+      email: email,
+      password: password,
+    );
+
+                    final loginViewModel = LoginViewModel();
+        loginViewModel.loginUser(request, context);
+                  }
+                }),
+          ),
+          SizedBox(
+            height: 14.sp,),
                Align(
                 alignment: Alignment.center,
                 child: Text('Or Continue With',style: TextStyle(
@@ -69,6 +98,9 @@ class LoginView extends StatelessWidget {
                     color: Color(0xff51526C)
                   ),),
                   InkWell(
+                    onTap: (){
+                      Navigator.pushReplacementNamed(context, Routes.signup);
+                    },
                     child: Text('register?',
                     style: TextStyle(
                       fontSize: 12.sp,

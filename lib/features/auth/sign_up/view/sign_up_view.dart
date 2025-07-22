@@ -8,6 +8,7 @@ import 'package:marketi/core/widget/custom_buttom.dart';
 import 'package:marketi/core/widget/custom_text_field.dart';
 import 'package:marketi/features/auth/login/view/widget/custom_other_login.dart';
 import 'package:marketi/features/auth/sign_up/data/model/sign_up_model.dart';
+import 'package:marketi/features/auth/sign_up/view_model/sign_up_viewmodel.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -17,12 +18,12 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SiState extends State<SignUpView> {
-   bool hasLowerCase =false;
-  bool hasUpperCase =false;
-  bool hasSpecialCharacter =false;
-  bool hasNumber =false;
-  bool hasMinLenght =false;
-  bool isPasswordObscureText =false;
+  bool hasLowerCase = false;
+  bool hasUpperCase = false;
+  bool hasSpecialCharacter = false;
+  bool hasNumber = false;
+  bool hasMinLenght = false;
+  bool isPasswordObscureText = false;
   //late TextEditingController passwordController;
 
   final nameController = TextEditingController();
@@ -31,27 +32,22 @@ class _SiState extends State<SignUpView> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   @override
+  void initState() {
+    super.initState();
+    passwordControllerListner();
+  }
 
-  void initState(){
-
-  super.initState();
-  passwordControllerListner();
-
- }
-
- void passwordControllerListner(){
-
-  passwordController.addListener((){
-    setState(() {
-      hasLowerCase =AppRegex.hasLowerCase(passwordController.text);
-      hasUpperCase =AppRegex.hasUpperCase(passwordController.text);
-      hasSpecialCharacter =AppRegex.hasSpecialCharacter(passwordController.text);
-      hasMinLenght =AppRegex.hasMinLength(passwordController.text); 
+  void passwordControllerListner() {
+    passwordController.addListener(() {
+      setState(() {
+        hasLowerCase = AppRegex.hasLowerCase(passwordController.text);
+        hasUpperCase = AppRegex.hasUpperCase(passwordController.text);
+        hasSpecialCharacter =
+            AppRegex.hasSpecialCharacter(passwordController.text);
+        hasMinLenght = AppRegex.hasMinLength(passwordController.text);
+      });
     });
-
-  });
-
- }
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +74,6 @@ class _SiState extends State<SignUpView> {
               ],
             ),
             Text(
-              
               'Your Name',
               style: TextStyle(
                 color: AppColor.darkBlue,
@@ -87,12 +82,12 @@ class _SiState extends State<SignUpView> {
               ),
             ),
             CustomTextField(
-               controller: nameController,
+              controller: nameController,
               hintText: 'Full Name',
               validator: (value) {
-                 if(value == null || value.isEmpty ){
-                return 'please enter a valid name ';
-              }
+                if (value == null || value.isEmpty) {
+                  return 'please enter a valid name ';
+                }
               },
               prefixIcon: Padding(
                 padding: EdgeInsets.only(top: 12, left: 14, bottom: 14),
@@ -114,9 +109,11 @@ class _SiState extends State<SignUpView> {
               controller: phoneController,
               hintText: '+20 1501142409',
               validator: (value) {
-                 if(value == null || value.isEmpty || !AppRegex.isPhoneNumberValid(value)){
-                return 'please enter a valid phone ';
-              }
+                if (value == null ||
+                    value.isEmpty ||
+                    !AppRegex.isPhoneNumberValid(value)) {
+                  return 'please enter a valid phone ';
+                }
               },
               prefixIcon: Padding(
                 padding: EdgeInsets.only(top: 12, left: 14, bottom: 14),
@@ -135,12 +132,14 @@ class _SiState extends State<SignUpView> {
               ),
             ),
             CustomTextField(
-              controller: emailController, 
+              controller: emailController,
               hintText: 'You@gmail.com ',
               validator: (value) {
-                 if(value == null || value.isEmpty || !AppRegex.isEmailValid(value)){
-                return 'please enter a valid email ';
-              }
+                if (value == null ||
+                    value.isEmpty ||
+                    !AppRegex.isEmailValid(value)) {
+                  return 'please enter a valid email ';
+                }
               },
               prefixIcon: Padding(
                 padding: EdgeInsets.only(top: 12, left: 14, bottom: 14),
@@ -162,9 +161,11 @@ class _SiState extends State<SignUpView> {
               controller: passwordController,
               hintText: 'Password',
               validator: (value) {
-                if(value == null || value.isEmpty || !AppRegex.isPasswordValid(value)){
-                return 'please enter a valid password ';
-              }
+                if (value == null ||
+                    value.isEmpty ||
+                    !AppRegex.isPasswordValid(value)) {
+                  return 'please enter a valid password ';
+                }
               },
               prefixIcon: Icon(
                 Icons.lock_outline_rounded,
@@ -183,22 +184,25 @@ class _SiState extends State<SignUpView> {
               controller: confirmPasswordController,
               hintText: 'Confirm Password',
               validator: (value) {
-                if(value == null || value.isEmpty ){
-                return 'please enter a valid password ';
-              }
+                if (value == null || value.isEmpty) {
+                  return 'please enter a valid password ';
+                }
               },
               prefixIcon: Icon(
                 Icons.lock_outline_rounded,
                 size: 18,
               ),
             ),
-
-            SizedBox(height: 12.h,),
-            CustomButtom(text: 'Sign Up', onPressed: (){
-              final request = SignUpRequest(
-                    name: nameController.text,
-                    phone: phoneController.text,
-                    email: emailController.text,
+            SizedBox(
+              height: 12.h,
+            ),
+            CustomButtom(
+                text: 'Sign Up',
+                onPressed: () {
+                  final request = SignUpRequest(
+                   name: nameController.text.trim(), 
+                   phone: phoneController.text.trim(),
+      email: emailController.text.trim(),
                     password: passwordController.text,
                     confirmPassword: confirmPasswordController.text,
                   );
@@ -206,20 +210,31 @@ class _SiState extends State<SignUpView> {
                   // حالياً هنجرب نطبع البيانات في الـ console
                   print('SignUpRequest: ${request.toJson()}');
 
-                  // بعدين ممكن تستدعي ViewModel زي:
-                  // Provider.of<SignUpViewModel>(context, listen: false)
-                  //   .registerUser(request, context);
-            }),
-             SizedBox(height: 12.h,),
+                  print('SignUpRequest: ${request.toJson()}');
+
+                  
+                  final viewModel =
+                      SignUpViewModel(); 
+
+                  viewModel.registerUser(request, context);
+                }),
+            SizedBox(
+              height: 12.h,
+            ),
             Align(
-                alignment: Alignment.center,
-                child: Text('Or Continue With',style: TextStyle(
-                  fontSize: 12.sp,fontWeight: FontWeight.w400,
-                  color: Color(0xff51526C)
-                ),),
-               ),
-                SizedBox(height: 12.h,),
-               CustomOtherLogin(),
+              alignment: Alignment.center,
+              child: Text(
+                'Or Continue With',
+                style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff51526C)),
+              ),
+            ),
+            SizedBox(
+              height: 12.h,
+            ),
+            CustomOtherLogin(),
           ],
         ),
       )),

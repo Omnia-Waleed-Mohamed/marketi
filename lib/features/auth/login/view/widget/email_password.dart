@@ -8,20 +8,29 @@ import 'package:marketi/core/widget/custom_text_field.dart';
 class EmailAndPassword extends StatefulWidget {
   const EmailAndPassword({super.key});
 
-  
+static final GlobalKey<_EmailAndPasswordState> globalKey =
+      GlobalKey<_EmailAndPasswordState>();
+
 
   @override
   State<EmailAndPassword> createState() => _EmailAndPasswordState();
 }
 
 class _EmailAndPasswordState extends State<EmailAndPassword> {
+
+final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  
+
   bool hasLowerCase =false;
   bool hasUpperCase =false;
   bool hasSpecialCharacter =false;
   bool hasNumber =false;
   bool hasMinLenght =false;
   bool isPasswordObscureText =false;
-  late TextEditingController passwordController;
+  //late TextEditingController passwordController;
+
+   final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
 
@@ -46,10 +55,14 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
 
  }
   Widget build(BuildContext context) {
-    return Form(child: 
+    return Form(
+      key: formKey,
+      child: 
     Column(
       children: [
-        CustomTextField( hintText: 'Username or Email', validator: (value){
+        CustomTextField(
+          controller: emailController,
+           hintText: 'Username or Email', validator: (value){
               if(value == null || value.isEmpty || !AppRegex.isEmailValid(value)){
                 return 'please enter a valid email ';
               }
@@ -58,7 +71,9 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
         SizedBox(
           height: 12.h,
         ),
-        CustomTextField(hintText: 'Password', validator: (value){
+        CustomTextField(
+          controller: passwordController,
+          hintText: 'Password', validator: (value){
           if(value == null || value.isEmpty || !AppRegex.isPasswordValid(value)){
                 return 'please enter a valid password ';
               }
@@ -68,4 +83,7 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
     )
     );
   }
+  String get email => emailController.text;
+  String get password => passwordController.text;
+  bool validateForm() => formKey.currentState?.validate() ?? false;
 }

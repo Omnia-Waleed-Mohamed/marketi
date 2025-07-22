@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:marketi/core/constant/string.dart';
 import 'package:marketi/features/auth/sign_up/data/model/sign_up_model.dart';
-import 'package:marketi/features/auth/sign_up/data/repo/sign_uo_repo.dart';
+import 'package:marketi/features/auth/sign_up/data/repo/sign_up_repo.dart';
 
 
 
 class SignUpViewModel extends ChangeNotifier {
-  final AuthRepository _authRepository = AuthRepository();
+  final SignUpRepository _authRepository = SignUpRepository();
 
   bool isLoading = false;
 
@@ -19,11 +20,11 @@ class SignUpViewModel extends ChangeNotifier {
     notifyListeners();
 
     if (token != null) {
-      // ممكن تخزنيه في SharedPreferences مثلاً
+      
       print('Registration successful. Token: $token');
-      // navigate to home or login screen
+      Navigator.pushReplacementNamed(context, Routes.home);
     } else {
-      // Show error message
+      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Registration failed')),
       );
