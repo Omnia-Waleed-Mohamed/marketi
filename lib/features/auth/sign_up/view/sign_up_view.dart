@@ -7,6 +7,7 @@ import 'package:marketi/core/widget/custom_arrow_back.dart';
 import 'package:marketi/core/widget/custom_buttom.dart';
 import 'package:marketi/core/widget/custom_text_field.dart';
 import 'package:marketi/features/auth/login/view/widget/custom_other_login.dart';
+import 'package:marketi/features/auth/sign_up/data/model/sign_up_model.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -22,7 +23,13 @@ class _SiState extends State<SignUpView> {
   bool hasNumber =false;
   bool hasMinLenght =false;
   bool isPasswordObscureText =false;
-  late TextEditingController passwordController;
+  //late TextEditingController passwordController;
+
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   @override
 
   void initState(){
@@ -71,6 +78,7 @@ class _SiState extends State<SignUpView> {
               ],
             ),
             Text(
+              
               'Your Name',
               style: TextStyle(
                 color: AppColor.darkBlue,
@@ -79,6 +87,7 @@ class _SiState extends State<SignUpView> {
               ),
             ),
             CustomTextField(
+               controller: nameController,
               hintText: 'Full Name',
               validator: (value) {
                  if(value == null || value.isEmpty ){
@@ -102,6 +111,7 @@ class _SiState extends State<SignUpView> {
               ),
             ),
             CustomTextField(
+              controller: phoneController,
               hintText: '+20 1501142409',
               validator: (value) {
                  if(value == null || value.isEmpty || !AppRegex.isPhoneNumberValid(value)){
@@ -125,6 +135,7 @@ class _SiState extends State<SignUpView> {
               ),
             ),
             CustomTextField(
+              controller: emailController, 
               hintText: 'You@gmail.com ',
               validator: (value) {
                  if(value == null || value.isEmpty || !AppRegex.isEmailValid(value)){
@@ -148,6 +159,7 @@ class _SiState extends State<SignUpView> {
               ),
             ),
             CustomTextField(
+              controller: passwordController,
               hintText: 'Password',
               validator: (value) {
                 if(value == null || value.isEmpty || !AppRegex.isPasswordValid(value)){
@@ -168,6 +180,7 @@ class _SiState extends State<SignUpView> {
               ),
             ),
             CustomTextField(
+              controller: confirmPasswordController,
               hintText: 'Confirm Password',
               validator: (value) {
                 if(value == null || value.isEmpty ){
@@ -181,7 +194,22 @@ class _SiState extends State<SignUpView> {
             ),
 
             SizedBox(height: 12.h,),
-            CustomButtom(text: 'Sign Up', onPressed: (){}),
+            CustomButtom(text: 'Sign Up', onPressed: (){
+              final request = SignUpRequest(
+                    name: nameController.text,
+                    phone: phoneController.text,
+                    email: emailController.text,
+                    password: passwordController.text,
+                    confirmPassword: confirmPasswordController.text,
+                  );
+
+                  // حالياً هنجرب نطبع البيانات في الـ console
+                  print('SignUpRequest: ${request.toJson()}');
+
+                  // بعدين ممكن تستدعي ViewModel زي:
+                  // Provider.of<SignUpViewModel>(context, listen: false)
+                  //   .registerUser(request, context);
+            }),
              SizedBox(height: 12.h,),
             Align(
                 alignment: Alignment.center,
